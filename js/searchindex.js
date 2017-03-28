@@ -1,0 +1,1 @@
+// Need JS to update submit on search focus due to DOM structure
