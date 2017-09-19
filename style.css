@@ -113,6 +113,7 @@ img{
 .navbar-brandimg
 {
 	margin-top: 25px;
+	margin-left:-280px;
 }
 .navbar-default .navbar-brand {
   color: #fff;
@@ -1491,6 +1492,7 @@ ul.sidebar-gallery {
   	-webkit-transition: width 1s; /* Safari */
    transition: width 1s;
 }
+
 
 .submit
 { 

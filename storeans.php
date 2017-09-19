@@ -1,18 +1,13 @@
 <?php
 	session_start();	
     $con= mysqli_connect("127.0.0.1","root","alumni","Alumni")or die("Could not connect");
+#    $con= mysqli_connect("127.0.0.1","root","","Alumni")or die("Could not connect");
+    $id=$_POST['hide'];
     $user = $_SESSION['user'];
-    $que = $_POST['query'];
-    $rowSQL = mysql_query( "SELECT MAX(qid) AS max FROM questions;" );
-    $row = mysql_fetch_array( $rowSQL);
-    if($row['max'] == NULL )    $id = 1;
-    else $id = $row['max'] + 1;
-    $ins = "INSERT INTO questions VALUES ('$id','$que','$user',CURRENT_TIMESTAMP)";
-    if($res=mysqli_query($con,$ins))
+    $ans = $_POST['answer'];
+    if($res=mysqli_query($con,"INSERT INTO answers VALUES ('$id','$ans','$user',CURRENT_TIMESTAMP);"))
     {       
        header('location:blog.php');
     }   
-    else echo '<script>
-        	            alert("Error");
-                </script>';
+    else echo"error"; 
 ?>

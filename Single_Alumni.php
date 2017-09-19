@@ -1,7 +1,7 @@
 <?php 
         session_start();
 //        $con = mysqli_connect("127.0.0.1:3306","root","","Alumni") or die("Could not connect");
-          $con = mysqli_connect("127.0.0.1:3306","root","alumni","Alumni") or die("Could not connect");
+            $con = mysqli_connect("127.0.0.1:3306","root","alumni","Alumni") or die("Could not connect");
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -12,7 +12,6 @@
 			color:#0288D1;	
 		}
 		.imgcircle{
-			margin-top: 100px;
 			height:250px;
 			width: 270px;
 	   	 box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -70,7 +69,7 @@
 				 margin-bottom: 20px;
 			}
 	</style>
-	<title>Alumni</title>
+	<title>Alumnu</title>
     	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -116,7 +115,7 @@
               </button>
               <!-- LOGO -->
               <!-- TEXT BASED LOGO -->
-                  <a class="navbar-brand" href="index.php">RGUKT<span>&nbsp;Alumni</span></a>  
+                  <a class="navbar-brand" href="index.php">RGUKT<span>&nbsp;Alumni</span></a>                
               <!-- IMG BASED LOGO  -->
                        
                      
@@ -127,8 +126,8 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Connect<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li ><a href="Alumni.php">Alumni</a></li>
-                    <li class="active"><a href="Faculty.php">Faculty</a></li>               
+                    <li class="active"><a href="Alumni.php">Alumni</a></li>
+                    <li><a href="Faculty.php">Faculty</a></li>               
                   </ul>
                 </li>   
                 <li><a href="blog.php">Blog</a></li>
@@ -140,7 +139,7 @@
 		
 	if(isset($_SESSION['user']))
 		echo '<li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">'.$_SESSION['user'].'<span class="caret"></span></a>
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-              expanded="false">'.$_SESSION['user'].'<span class="caret"></span></a>
 		          <ul class="dropdown-menu" role="menu">
 		            <li><a href="logout.php">logout</a></li>
 		          </ul>
@@ -152,61 +151,55 @@
           </div>     
         </nav>  
       </div>
-      <!-- END MENU -->        
+      <!-- END MENU -->    
     </header>
-<?php
-	$id = $_POST['hide'];
-	$res = mysqli_query($con, "select * from profiles where fid='$id';");
-        while($row = mysqli_fetch_assoc($res))
-        {
-	echo '<div class="profilebody">
+	<div class="profilebody">
 					<div class="introduce">
 							 <h2 class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
                         Personal Details
                         </h2>
 							<div class="presonal-inform">
-		                       <ul>
+		                   <ul>
 		                             <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                 <b>Name:</b>
-		                                 '.$row['name'].'
+		                                 Samit Kumar Pradhan
 		                             </li>
 		                             <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                 <b>Job:</b>
-		                                 '.$row['job'].'
+		                                 Assistant Professor
 		                             </li>
 		                             <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                 <b>Phone:</b>
-		                                 '.$row['phone'].'
+		                                 8500862608
 		                             </li>
 		                             <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                 <b>Date of Birth:</b>
-		                                 '.$row['dob'].'
+		                                 ---------
 		                             </li>
 		                             <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                 <b>Email:</b>
-		                                 '.$row['email'].'
+		                                 samitcs@rgukt.in
 		                             </li>
-		                            <!--  <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
+		                             <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                 <b>Address:</b>
 		                                 IIIT Basar, Nirmal 504107
 		                             </li>
 		                             <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                 <b>Nationality:</b>
 		                                 Indian
-		                             </li> -->
+		                             </li>
 		                             <li class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                 <b>Languages:</b>
-			                             '.$row['languages'].'
+			                              English, Hindi, Odiya
 		                             </li>
-		                       </ul>
-						    </div>
-					</div>
+		                    </ul>
+							</div>
+						</div>
 						<div class="profimg">
-						 <img class="imgcircle" src='.$row['img_src'].' alt=""/>
-						</div>';
-		}
-?>
-						<!-- <div class="introduce">
+						 <img class="imgcircle" src="img/samit.jpg" alt=""/>
+						</div>
+						<br/><br/>
+						<div class="introduce">
 							 <h2 class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
                         Educational Details
                         </h2>
@@ -230,24 +223,22 @@
 		                             </li>		                             
 		                    </ul>
 							</div>
-						</div> -->
-						<br/><br/><br/><br/><br/><br/>
+						</div>
 						<br/><br/><br/><br/>
-						<!-- <div class="introduce">
+						<div class="introduce">
 							 <h2 class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
-                         Areas Interested
-                         </h2>
-                         <div class="presonal-inform">
+                        Areas Interested
+                        </h2>
+                        <div class="presonal-inform">
 		                   <ul>
                             <p id="areas" class="animated fadeIn wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
 		                                Artificial Intelligence, Machine Learning, Document Image Analysis
 									</p>		                                
-	                        </ul>
+	                    </ul>
 						</div>
-					</div> -->
+					</div>
 					<br/><br/><br/><br/><br/><br/>
-<!-- 	</div>	
- -->
+	</div>	
 	<!--=========== BEGIN FOOTER SECTION ================-->
     <footer id="footer">
       <!-- Start footer top area -->

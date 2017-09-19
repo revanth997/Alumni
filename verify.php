@@ -2,10 +2,11 @@
 session_start();	
     echo "Hello";
       
-    $con = mysqli_connect("127.0.0.1:3306","root","alumni","Alumni") or die("Could not connect");
+    $con = mysqli_connect("127.0.0.1","root","alumni","Alumni") or die("Could not connect");
+#    $con = mysqli_connect("127.0.0.1","root","","Alumni") or die("Could not connect");
     if(isset($_POST['login']))
     {
-      $user = $_POST['uname'];
+      $user = strtoupper($_POST['uname']);
       $pwd = $_POST['passwd'];
 	if (!$con)  echo "Failed to connect to MySQL: ";
 

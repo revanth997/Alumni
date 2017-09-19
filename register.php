@@ -1,5 +1,6 @@
 <?php
       $con=mysqli_connect("127.0.0.1:3306","root","alumni","Alumni");
+#      $con=mysqli_connect("127.0.0.1:3306","root","","Alumni");
       if(!$con) echo"Connection established";
       
       $uname=$_POST['uname'];
@@ -21,10 +22,7 @@
       else 
       {
             $_SESSION['success'] = 0;
-            echo '<script language="javascript">';
-		echo 'alert("Error")';
-            
-#            header('Location:index.php');
+            header('Location:index.php');
       }
 #      "Userid already exists";
  ?>

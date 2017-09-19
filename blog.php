@@ -1,6 +1,7 @@
 <?php 
         session_start();
         $con = mysqli_connect("127.0.0.1:3306","root","alumni","Alumni") or die("Could not connect");
+#        $con = mysqli_connect("127.0.0.1:3306","root","","Alumni") or die("Could not connect");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,23 +13,20 @@
 
     <link rel="shortcut icon" type="image/icon" href="img/head.png"/>
 
+  
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/superslides.css">
     <link href="css/slick.css" rel="stylesheet"> 
-    <link rel='stylesheet prefetch' href='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/css/jquery.circliful.css'>  
+    <link rel='stylesheet prefetch' href='css/jquery.circliful.css'>  
     <link rel="stylesheet" href="css/animate.css"> 
     <link rel="stylesheet" href="css/queryLoader.css" type="text/css" />
     <link type="text/css" media="all" rel="stylesheet" href="css/jquery.tosrus.all.css" />    
     <link id="switcher" href="css/themes/default-theme.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
    
-    <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>   
-    <link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet' type='text/css'>    
-
- <!--     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>   -->
- 
+    <link href="css/fontmerri.css" rel='stylesheet' type='text/css'>   
+    <link href="css/fontvarela.css" rel='stylesheet' type='text/css'> 
   </head>
   <body>    
 
@@ -52,7 +50,7 @@
               </button>
               <!-- LOGO -->
               <!-- TEXT BASED LOGO -->
-              <a class="navbar-brand" href="index.php">RGUKT<span> Alumni</span></a>              
+               <a class="navbar-brand" href="index.php">RGUKT<span>&nbsp;Alumni</span></a>               
               <!-- IMG BASED LOGO  -->
                        
                      
@@ -79,7 +77,6 @@
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-              expanded="false">'.$_SESSION['user'].'<span class="caret"></span></a>
 		          <ul class="dropdown-menu" role="menu">
 		            <li><a href="logout.php">logout</a></li>
-		            <li><a href="#">Profile</a></li>               
 		          </ul>
 		     </li>';
 		else echo '<li><a href="login.php">Login</a></li> ';
@@ -104,10 +101,10 @@
               	echo '<input type="submit" value="Post" class="post" >';
               else
               {
-              	echo '<script>
-              	            alert("please login to post or give answer");
-              	</script>';
-              	//header('location:login.php');
+#              	echo '<script>
+#              	            alert("please login to post or give answer");
+#              	</script>';
+              	header('location:login.php');
               }
               ?> 
               
@@ -123,7 +120,8 @@
                  if(isset($_GET["page"])) {$page=$_GET["page"];}
                   $start_from = ($page-1)*$num_rec_page;
                   $res = mysqli_query($con, "select * from questions order by time desc LIMIT $start_from, $num_rec_page");
-                 	while ($row = mysqli_fetch_assoc($res)) {  
+                 	while ($row = mysqli_fetch_assoc($res)) 
+                 	{  
            ?>
                     <div class="blog-item">
                         <div class="row">
@@ -143,30 +141,51 @@
                            echo '<h4>'.$row['query'].'</h4>';
         ?> 
         
+        <?php    
+                          $i = 1;  
+                          $id = $row['qid'];                    
+                        $res1 = mysqli_query($con, "select * from answers where qid = '$id' order by time desc;");        
+             while ($row1 = mysqli_fetch_assoc($res1)){  
+                      if($i == 2)
+                      {
+        ?>
+                        <form action="answers.php" method="POST">
+                          <input type="hidden" name="hide" value='<?php echo $row['qid'];?>' />
+                         <input type="submit" class="btn btn-primary readmore" value="View More Answers" />
+                        </form> 
+        <?php                 
+                        break;                        
+                      }         
+                       echo '<h4 style="font-weight:500">'.$row1['answer']. '</h4>';
+                      echo '<h5 style="margin-left:300px;margin-top:-25px;"">Answer By '.$row1['a_user']. ' on '.$row1['time']. '</h5>';
+                      $i = $i+1;
+                    }
+        ?>
+        
         
                           <form action="storeans.php" method="POST">
-                          <input type='hidden' name='vari' value='<?php echo $row['query'];?>'/> 
+                          <input type="hidden" name="hide" value="<?php echo $row['qid'];?>"/> 
+                          <input type="text" class="form-control search_box" autocomplete="off" autofocus placeholder="Your answer" name="answer" required>
+                          <input class="btn btn-primary readmore" type="submit" value="Give answer" >
+<!--                          <a class="btn btn-primary readmore"> Give Answer <i class="fa fa-angle-right"></i></a>-->
+                          </form>
        	<?php
-                      if(isset($_SESSION['user']))
-                      {
-                    echo '<button class="btn_login" type="submit"  name="answer">Answer</button>';
-                      }
-                      else
-                      {
-                        echo '<script>
-        	            alert("please login to post or give answer");
-  	                  </script>';
-                      }
-            ?>
-                         </form>
-                         
+#                  if(isset($_SESSION['user']))
+#                    echo '<a class="btn btn-primary readmore"> Give Answer <i class="fa fa-angle-right"></i></a>';
+#                      else
+#                        echo '<script>
+#        	            alert("please login to post or give answer");
+#  	                  </script>';
+#                  
+#            ?>
+
                         </div>
                        </div>    
                     </div><!--/.blog-item-->
-                   }
+                  
                    
              <?php
-                  }
+             }
                   $res1 = mysqli_query($con,"select * from questions");
                   $tot_rec = mysqli_num_rows($res1);
                   $tot_pages = ceil($tot_rec/$num_rec_page);
@@ -320,7 +339,8 @@
 
     <!-- Javascript Files
     ================================================== -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jqmin.js"></script>
     <script src="js/queryloader2.min.js" type="text/javascript"></script>
     <script src="js/wow.min.js"></script>  
     <script src="js/bootstrap.min.js"></script>
@@ -328,9 +348,10 @@
     <script src="js/jquery.easing.1.3.js"></script>
     <script src="js/jquery.animate-enhanced.min.js"></script>
     <script src="js/jquery.superslides.min.js" type="text/javascript" charset="utf-8"></script>   
-    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
+    <script src="js/jqcirc.js"></script>
     <script type="text/javascript" language="javascript" src="js/jquery.tosrus.min.all.js"></script>   
     <script src="js/custom.js"></script>
+	
     <script src="js/functions.js"></script>
     
 </body>

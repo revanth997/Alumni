@@ -1,13 +1,14 @@
 <?php 
         session_start();
- //       $con = mysqli_connect("127.0.0.1:3306","root","alumni","Alumni") or die("Could not connect");
+//       $con = mysqli_connect("127.0.0.1:3306","root","","Alumni") or die("Could not connect");
+      $con = mysqli_connect("127.0.0.1:3306","root","alumni","Alumni") or die("Could not connect");
 ?>
 <!DOCTYPE html>
 <html lang="en">
       <style>
 		.cont_login {
-				 position: relative;
-			        width: 500px;
+				  position: relative;
+				  width: 500px;
 				left: 50%;
 				margin-top:-10px;
 				margin-left: 280px;
@@ -32,14 +33,13 @@
 				.cont_ba_opcitiy {
 					  position: relative;
 					  background-color:white;
-					  width: 80%;
+					  width: 350px;
 					  border-radius:3px ;
 					 margin-top: 60px;
 					 padding: 15px 0px;
 					}
 				
 	</style>
-
   <head>
     ================================================== -->
     <meta charset="utf-8">
@@ -51,40 +51,21 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/icon" href="img/head.png"/>
 
-    <!-- CSS
-    ================================================== -->       
-    <!-- Bootstrap css file-->
+ 
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font awesome css file-->
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <!-- Superslide css file-->
     <link rel="stylesheet" href="css/superslides.css">
-    <!-- Slick slider css file -->
     <link href="css/slick.css" rel="stylesheet"> 
-    <!-- Circle counter cdn css file -->
-    <link rel='stylesheet prefetch' href='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/css/jquery.circliful.css'>  
-    <!-- smooth animate css file -->
+    <link rel='stylesheet prefetch' href='css/jquery.circliful.css'>  
     <link rel="stylesheet" href="css/animate.css"> 
-    <!-- preloader -->
     <link rel="stylesheet" href="css/queryLoader.css" type="text/css" />
-    <!-- gallery slider css -->
     <link type="text/css" media="all" rel="stylesheet" href="css/jquery.tosrus.all.css" />    
-    <!-- Default Theme css file -->
     <link id="switcher" href="css/themes/default-theme.css" rel="stylesheet">
-    <!-- Main structure css file -->
     <link href="style.css" rel="stylesheet">
-    <link href="css/event.css" rel="stylesheet">
    
-    <!-- Google fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>   
-    <link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet' type='text/css'>    
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="css/fontmerri.css" rel='stylesheet' type='text/css'>   
+    <link href="css/fontvarela.css" rel='stylesheet' type='text/css'> 
+    <link href="css/event.css" rel="stylesheet">
  
   </head>
   <body>    
@@ -109,7 +90,7 @@
               </button>
               <!-- LOGO -->
               <!-- TEXT BASED LOGO -->
-              <a class="navbar-brand" href="index.php">RGUKT<span> Alumni</span></a>             
+                  <a class="navbar-brand" href="index.php">RGUKT<span>&nbsp;Alumni</span></a>                
               <!-- IMG BASED LOGO  -->
                        
                      
@@ -136,7 +117,6 @@
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-              expanded="false">'.$_SESSION['user'].'<span class="caret"></span></a>
 		          <ul class="dropdown-menu" role="menu">
 		            <li><a href="logout.php">logout</a></li>
-		            <li><a href="#">Profile</a></li>               
 		          </ul>
 		     </li>';
 		else echo '<li><a href="login.php">Login</a></li> ';
@@ -154,7 +134,16 @@
     <section id="courseArchive">
     <br/>
     <br/>
-      <div class="container">
+<?php
+	
+ 		 $num_rec_page = 4;
+                  $page = 1;
+                 if(isset($_GET["page"])) {$page=$_GET["page"];}
+                  $start_from = ($page-1)*$num_rec_page;
+                  $res = mysqli_query($con, "select * from events order by time desc LIMIT $start_from, $num_rec_page");
+         	while ($row = mysqli_fetch_assoc($res)) 
+         	{  
+      echo '<div class="container">
         <div class="row">
           <!-- start course content -->
           <div class="col-lg-8 col-md-8 col-sm-8">
@@ -163,44 +152,50 @@
               <div class="row">
                 <!-- start single blog archive -->
                 <div class="col-lg-12 col-12 col-sm-12">
-                  <div class="single_blog_archive wow fadeInUp">
-                    <div class="blogimg_container">
-                      <a href="#" class="blog_img">
-                        <img alt="img" src="img/ml.jpg">
-                      </a>
-                    </div>
-                    <h2 class="blog_title"><a href="events-single.php"> Machine Learning Workshop</a></h2>
-                    <div class="blog_commentbox">
-                      <p><i class="fa fa-clock-o"></i>Time: 9am,26 March 2017</p>
-                      <p><i class="fa fa-map-marker"></i>Location: SAC Auditorium, IIITB</p>                      
-                    </div>
-                    <p class="blog_summary">Our CSE Dept is going to conduct ML workshop. Cheif guests are HOD, Faculty of CSE and Thoughtworks Deligates</p>
-                    <a class="blog_readmore" href="#">Read More</a>
-                  </div>
+                  <div class="single_blog_archive wow fadeInUp">';
+                 
+		        echo' </div>
+		            <h2 class="blog_title"><a href="events.php">'.$row['name'].'</a></h2>
+		            <div class="blog_commentbox">
+		              <p>On '.$row['date'].', <i class="fa fa-clock-o"></i>'. $row['time'].'</p>
+		              <p><i class="fa fa-map-marker"></i>Location : '.$row['venue'].'</p>                      
+		            </div>
+		            <p class="blog_summary">'.$row['description'].'</p>
+		          </div>';
+		}
+?>
                 </div>
+
                 <!-- End single blog archive -->
-                               <!-- start single blog archive -->
-                <div class="col-lg-12 col-12 col-sm-12">
-                  <div class="single_blog_archive wow fadeInUp">
-                    <div class="blogimg_container">
-                      <a href="#" class="blog_img">
-                        <img alt="img" src="img/gather.jpg">
-                      </a>
-                    </div>
-                    <h2 class="blog_title"><a href="events-single.php"> Convocation</a></h2>
-                    <div class="blog_commentbox">
-                      <p><i class="fa fa-clock-o"></i>Time: 6pm,1 April 2017</p>
-                      <p><i class="fa fa-map-marker"></i>Location: CSE Conference Hall, IIITB</p>                      
-                    </div>
-                    <p class="blog_summary">RGUKT is going to conduct 2nd Convocation Ceremony.</p>
-                    <a class="blog_readmore" href="#">Read More</a>
-                  </div>
-                </div>
-                <!-- End single blog archive -->
+
               <!-- start previous & next button -->
+              <?php
+                  $res1 = mysqli_query($con,"select * from questions");
+                  $tot_rec = mysqli_num_rows($res1);
+                  $tot_pages = ceil($tot_rec/$num_rec_page);
+                  if($page == 1) 
+                  	$prev = $page;
+                  else
+                  	$prev = $page-1;
+                  if($page == $tot_pages) 
+                  	$next= $page;
+                  else
+                  	$next = $page+1;               
+          ?>
               <div class="single_blog_prevnext">
-                <a href="#" class="prev_post wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;"><i class="fa fa-angle-left"></i>Previous</a>
-                <a href="#" class="next_post wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">Next<i class="fa fa-angle-right"></i></a>
+		 <ul class="pagination pagination-lg">
+	<?php          
+    	  echo '<li><a href="events.php?page='.$prev.'" class="prev_post wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;"><i class="fa fa-angle-left"></i>Previous</a></li>';
+		 for ($i=1; $i <= $tot_pages ; $i++) 
+                  { 
+                  	if($i == $page)
+                    	      echo '<li class="active"><a href="events.php?page='.$i.'">'.$i.'</a></li>';
+                        else
+                    	      echo '<li><a href="events.php?page='.$i.'">'.$i.'</a></li>';
+                  }
+              echo  '<li><a href="events.php?page='.$next.'" class="next_post wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">Next<i class="fa fa-angle-right"></i></a></li>';
+?>
+		</ul>
               </div>
             </div>
           </div>
@@ -226,15 +221,28 @@
 	<div class="cont_forms" >
     <div class="cont_img_back_">
        </div>
+ <form action="storeevent.php" method="POST">
  <div class="cont_form_login">
-<a href="#" onclick="ocultar_login_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
+
+<a href="#" onclick="ocultar_login_sign_up()" ><i class="fa fa-angle-left"></i></a>
    <h2>Event Details</h2>
- <input type="text" placeholder="  Event Name" />
-<input type="text" placeholder="  Description" />
-<input type="text" placeholder="  Location" />
-<input type="text" placeholder="  Time (24 hours)" />
-<button class="btn_login" onclick="cambiar_login()">Schedule</button>
+    
+	 <input type="text" placeholder="  Event Name" name="ename" required/>
+	<input type="text" placeholder="  Description" name="description" required/>
+	<input type="text" placeholder="  Location" name= "venue" required/>
+	<input type="date" placeholder="  YYYY-MM-DD" name= "date" pattern="^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$" required/>
+	<input type="text" placeholder="  HH(:MM) AM/PM" name= "time" pattern="(0?[1-9]|1[0-2])(:[0-5][0-9])? (am|AM)|(pm|PM)$" required/>
+	
+  <?php 
+              if(!isset($_SESSION['user'])) echo '<script>alert("Login to schedule event")</script>' ;
+                // header('location:login.php');
+              //else echo '<input class="post" type="submit" value="Post" name="post">';
+              else echo'<button class="btn_login" onclick="cambiar_login()">Schedule</button>';
+  ?> 
+  
+     </form>
   </div>
+  </form>
   
    <div class="cont_form_sign_up">
 <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
@@ -314,27 +322,18 @@
     ================================================== -->
 
    <script src="js/loginindex.js"></script>
-    <!-- initialize jQuery Library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Preloader js file -->
+
+   <script src="js/jquery.min.js"></script>
+    <script src="js/jqmin.js"></script>
     <script src="js/queryloader2.min.js" type="text/javascript"></script>
-    <!-- For smooth animatin  -->
     <script src="js/wow.min.js"></script>  
-    <!-- Bootstrap js -->
     <script src="js/bootstrap.min.js"></script>
-    <!-- slick slider -->
     <script src="js/slick.min.js"></script>
-    <!-- superslides slider -->
     <script src="js/jquery.easing.1.3.js"></script>
     <script src="js/jquery.animate-enhanced.min.js"></script>
     <script src="js/jquery.superslides.min.js" type="text/javascript" charset="utf-8"></script>   
-    <!-- for circle counter -->
-    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
-    <!-- Gallery slider -->
+    <script src="js/jqcirc.js"></script>
     <script type="text/javascript" language="javascript" src="js/jquery.tosrus.min.all.js"></script>   
-   
-    <!-- Custom js-->
     <script src="js/custom.js"></script>
-
   </body>
 </html>
